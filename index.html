@@ -1,256 +1,379 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <title>Tarot Card Drawer</title>
-  <style>
-      body {
-    font-family: 'Arial', sans-serif;
-    padding: 2rem;
-    background: #f2f2f2;
-    text-align: center;
-  }
+    <meta charset="UTF-8">
+    <title>Tarot Card Reader</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  h1 {
-    color: #333;
-    margin-bottom: 1rem;
-  }
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            padding: 2rem;
+            background: #f2f2f2;
+            text-align: center;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
 
-  button {
-    font-family: 'Arial', sans-serif;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-  }
+        h1 {
+            color: #333;
+            margin-bottom: 1rem;
+            transition: color 0.3s ease;
+        }
 
-  .draw-button {
-    background-color: #4B006e;
-    color: #fff;
-    border: none;
-    border-radius: 6px;
-    padding: 10px 20px;
-    margin: 0.5rem 0.25rem;
-  }
+        button {
+            font-family: 'Arial', sans-serif;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
 
-  .draw-button:hover {
-    background-color: #6a0dad;
-    transform: scale(1.05);
-  }
+        .draw-button {
+            background-color: #4b006e;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            padding: 10px 20px;
+            margin: 0.5rem 0.25rem;
+        }
 
-  #shuffleButton {
-    background-color: #000000;
-    color: #fff;
-    border: none;
-    border-radius: 6px;
-    padding: 10px 20px;
-    margin-bottom: 1rem;
-  }
+        .draw-button:hover {
+            background-color: #6a0dad;
+            transform: scale(1.05);
+        }
 
-  #shuffleButton:hover {
-    background-color: #555;
-    transform: scale(1.05);
-  }
+        .draw-button:disabled {
+            background-color: #a974c2;
+            color: #eee;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
 
-  .results {
-    margin-top: 2rem;
-    padding: 1rem;
-    background: #fff;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    max-width: 600px;
-    margin-left: auto;
-    margin-right: auto;
-    text-align: left;
-    font-size: 16px;
-  }
+        #shuffleButton {
+            background-color: #333;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            padding: 10px 20px;
+            margin-bottom: 1rem;
+        }
 
-  .special {
-    color: #4B006e;
-    font-weight: bold;
-  }
+        #shuffleButton:hover {
+            background-color: #555;
+            transform: scale(1.05);
+        }
 
-  li {
-    margin-bottom: 5px;
-  }
+        #themeToggle {
+            margin-bottom: 1rem;
+            background-color: #222;
+            color: #fff;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+        }
 
-  /* Shuffle scatter */
-  .deck-container {
-    margin: 0 auto;
-    height: 100px;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-  }
+        .results {
+            margin-top: 2rem;
+            padding: 1rem;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            text-align: left;
+            font-size: 16px;
+        }
 
-  .card {
-    width: 40px;
-    height: 60px;
-    background-image: url('https://64.media.tumblr.com/1c88a494f09a511823c5913bc3326659/6c8580037bdcd35c-5e/s400x600/1c6332243e880b7e2412fd5fad8d5faa2d88ff5e.pnj');
-    background-size: cover;
-    background-position: center;
-    border-radius: 6px;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    opacity: 0;
-    transition: transform 0.5s ease, opacity 0.5s ease;
-  }
+        .special {
+            color: #4b006e;
+            font-weight: bold;
+        }
 
-  .card.animate {
-    opacity: 1;
-  }
+        li {
+            margin-bottom: 5px;
+        }
 
-  .card.restack {
-    transform: translateX(0) translateY(0) rotate(0deg) !important;
-    transition: transform 1s ease-in;
-  }
+        .deck-container {
+            margin: 0 auto;
+            height: 100px;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
 
-  /* Final stacked deck */
-  #deckStack {
-    position: relative;
-    width: 50px;
-    height: 70px;
-    margin: -40px auto 10px;
-  }
+        .card {
+            width: 40px;
+            height: 60px;
+            background-image: url('https://64.media.tumblr.com/1c88a494f09a511823c5913bc3326659/6c8580037bdcd35c-5e/s400x600/1c6332243e880b7e2412fd5fad8d5faa2d88ff5e.pnj');
+            background-size: cover;
+            background-position: center;
+            border-radius: 6px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            opacity: 0;
+            transition: transform 0.5s ease, opacity 0.5s ease;
+        }
 
-  .deck-card {
-    width: 100%;
-    height: 100%;
-    background-image: url('https://64.media.tumblr.com/1c88a494f09a511823c5913bc3326659/6c8580037bdcd35c-5e/s400x600/1c6332243e880b7e2412fd5fad8d5faa2d88ff5e.pnj');
-    background-size: cover;
-    background-position: center;
-    border-radius: 6px;
-    position: absolute;
-    top: 0;
-    left: 0;
-    box-shadow: 0 0 3px rgba(0, 0, 0, 0.4);
-  }
+        .card.animate {
+            opacity: 1;
+        }
 
-  </style>
+        .card.restack {
+            transform: translateX(0) translateY(0) rotate(0deg) !important;
+            transition: transform 1s ease-in;
+        }
+
+        #deckStack {
+            position: relative;
+            width: 50px;
+            height: 70px;
+            margin: -40px auto 10px;
+        }
+
+        .deck-card {
+            width: 100%;
+            height: 100%;
+            background-image: url('https://64.media.tumblr.com/1c88a494f09a511823c5913bc3326659/6c8580037bdcd35c-5e/s400x600/1c6332243e880b7e2412fd5fad8d5faa2d88ff5e.pnj');
+            background-size: cover;
+            background-position: center;
+            border-radius: 6px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            box-shadow: 0 0 3px rgba(0, 0, 0, 0.4);
+        }
+
+        /* Dark mode */
+        body.dark {
+            background: #1e1e1e;
+            color: #f0f0f0;
+        }
+
+        body.dark h1 {
+            color: #ffffff;
+        }
+
+        body.dark .results {
+            background: #2c2c2c;
+            color: #f0f0f0;
+        }
+
+        body.dark .draw-button {
+            background-color: #4b006e;
+            color: #ffffff;
+        }
+
+        body.dark .draw-button:hover {
+            background-color: #aa33dd;
+        }
+
+        body.dark .draw-button:disabled {
+            background-color: #b88de3;
+            color: #ffffff;
+        }
+
+        body.dark #shuffleButton {
+            background-color: #444;
+        }
+
+        body.dark #shuffleButton:hover {
+            background-color: #666;
+        }
+
+        body.dark #themeToggle {
+            background-color: #999;
+            color: #000;
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            body {
+                padding: 1rem;
+            }
+
+            h1 {
+                font-size: 1.5rem;
+            }
+
+            button,
+            .draw-button,
+            #shuffleButton,
+            #themeToggle {
+                font-size: 14px;
+                padding: 8px 12px;
+                margin: 0.5rem 0.2rem;
+                width: 90%;
+                max-width: 300px;
+            }
+
+            .deck-container {
+                height: 90px;
+            }
+
+            .card {
+                width: 32px;
+                height: 48px;
+            }
+
+            .deck-card {
+                width: 40px;
+                height: 60px;
+            }
+
+            #deckStack {
+                margin-top: -30px;
+            }
+
+            .results {
+                font-size: 15px;
+                padding: 0.75rem;
+            }
+
+            ul {
+                padding-left: 1rem;
+            }
+        }
+    </style>
 </head>
+
 <body>
+    <h1>🔮 Tarot Card Reader 🔮</h1>
+    <button id="themeToggle" onclick="toggleTheme()">🌗 Toggle Dark Mode</button><br>
+    <button id="shuffleButton" onclick="shuffleDeck()">🔁 Shuffle Cards</button>
+    <div id="shuffleStatus"></div>
 
-  <h1>🔮 Tarot Card Reader</h1>
-<button id="shuffleButton" onclick="shuffleDeck()">🔁 Shuffle Cards</button>
-<div id="shuffleStatus"></div>
-<div class="deck-container" id="deckContainer"></div>
-<div id="deckStack"></div>
-<p>Select how many cards to draw:</p>
-<button class="draw-button" onclick="drawOptions(3)" disabled>3 Card Spread</button>
-<button class="draw-button" onclick="drawOptions(5)" disabled>5 Card Spread</button>
-<button class="draw-button" onclick="drawOptions(10)" disabled>Celtic Cross</button>
-<div id="results" class="results"></div>
+    <div class="deck-container" id="deckContainer"></div>
+    <div id="deckStack"></div>
 
-  <script>
-    const TOTAL_OPTIONS = 78;
-  const SPECIAL_PROBABILITY = 0.05;
-  let deck = [];
+    <p>Select how many cards to draw:</p>
+    <button class="draw-button" onclick="drawOptions(3)" disabled>Draw 3</button>
+    <button class="draw-button" onclick="drawOptions(5)" disabled>Draw 5</button>
+    <button class="draw-button" onclick="drawOptions(10)" disabled>Draw 10</button>
 
-  const optionNames = [
-    "The Fool", "The Magician", "The High Priestess", "The Empress", "The Emperor",
-    "The Hierophant", "The Lovers", "The Chariot", "Strength", "The Hermit",
-    "Wheel of Fortune", "Justice", "The Hanged Man", "Death", "Temperance",
-    "The Devil", "The Tower", "The Star", "The Moon", "The Sun",
-    "Judgement", "The World",
-    "Ace of Wands", "Two of Wands", "Three of Wands", "Four of Wands", "Five of Wands",
-    "Six of Wands", "Seven of Wands", "Eight of Wands", "Nine of Wands", "Ten of Wands",
-    "Page of Wands", "Knight of Wands", "Queen of Wands", "King of Wands",
-    "Ace of Cups", "Two of Cups", "Three of Cups", "Four of Cups", "Five of Cups",
-    "Six of Cups", "Seven of Cups", "Eight of Cups", "Nine of Cups", "Ten of Cups",
-    "Page of Cups", "Knight of Cups", "Queen of Cups", "King of Cups",
-    "Ace of Swords", "Two of Swords", "Three of Swords", "Four of Swords", "Five of Swords",
-    "Six of Swords", "Seven of Swords", "Eight of Swords", "Nine of Swords", "Ten of Swords",
-    "Page of Swords", "Knight of Swords", "Queen of Swords", "King of Swords",
-    "Ace of Pentacles", "Two of Pentacles", "Three of Pentacles", "Four of Pentacles", "Five of Pentacles",
-    "Six of Pentacles", "Seven of Pentacles", "Eight of Pentacles", "Nine of Pentacles", "Ten of Pentacles",
-    "Page of Pentacles", "Knight of Pentacles", "Queen of Pentacles", "King of Pentacles"
-  ];
+    <div id="results" class="results"></div>
 
-  function shuffleDeck() {
-    document.getElementById('results').innerHTML = '';
-    document.getElementById('shuffleStatus').textContent = 'Shuffling the deck...';
-    disableDrawButtons(true);
-    deck = [];
+    <!-- Sound Effects -->
+    <audio id="shuffleSound"
+        src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_44fcf33fb6.mp3?filename=card-shuffle-1.mp3"></audio>
+    <audio id="drawSound"
+        src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_e9fe5ab2a3.mp3?filename=card-flip.mp3"></audio>
 
-    const scatterContainer = document.getElementById('deckContainer');
-    const stackContainer = document.getElementById('deckStack');
-    scatterContainer.innerHTML = '';
-    stackContainer.innerHTML = '';
+    <script>
+        const TOTAL_OPTIONS = 78;
+    const SPECIAL_PROBABILITY = 0.05;
+    let deck = [];
 
-    const cardCount = 30;
-    const restackStartTime = 3500;
-    const restackDuration = 2000;
+    const optionNames = ["The Fool", "The Magician", "The High Priestess", "The Empress", "The Emperor",
+      "The Hierophant", "The Lovers", "The Chariot", "Strength", "The Hermit",
+      "Wheel of Fortune", "Justice", "The Hanged Man", "Death", "Temperance",
+      "The Devil", "The Tower", "The Star", "The Moon", "The Sun",
+      "Judgement", "The World",
+      "Ace of Wands", "Two of Wands", "Three of Wands", "Four of Wands", "Five of Wands",
+      "Six of Wands", "Seven of Wands", "Eight of Wands", "Nine of Wands", "Ten of Wands",
+      "Page of Wands", "Knight of Wands", "Queen of Wands", "King of Wands",
+      "Ace of Cups", "Two of Cups", "Three of Cups", "Four of Cups", "Five of Cups",
+      "Six of Cups", "Seven of Cups", "Eight of Cups", "Nine of Cups", "Ten of Cups",
+      "Page of Cups", "Knight of Cups", "Queen of Cups", "King of Cups",
+      "Ace of Swords", "Two of Swords", "Three of Swords", "Four of Swords", "Five of Swords",
+      "Six of Swords", "Seven of Swords", "Eight of Swords", "Nine of Swords", "Ten of Swords",
+      "Page of Swords", "Knight of Swords", "Queen of Swords", "King of Swords",
+      "Ace of Pentacles", "Two of Pentacles", "Three of Pentacles", "Four of Pentacles", "Five of Pentacles",
+      "Six of Pentacles", "Seven of Pentacles", "Eight of Pentacles", "Nine of Pentacles", "Ten of Pentacles",
+      "Page of Pentacles", "Knight of Pentacles", "Queen of Pentacles", "King of Pentacles"];
 
-    const cards = [];
-
-    for (let i = 0; i < cardCount; i++) {
-      const card = document.createElement('div');
-      card.className = 'card';
-      scatterContainer.appendChild(card);
-      cards.push(card);
-
-      setTimeout(() => {
-        card.classList.add('animate');
-        card.style.transform = `translate(-50%, -50%) translate(${Math.random() * 200 - 100}px, ${Math.random() * 40 - 20}px) rotate(${Math.random() * 60 - 30}deg)`;
-      }, i * 80);
+    function toggleTheme() {
+      document.body.classList.toggle('dark');
     }
 
-    setTimeout(() => {
-      cards.forEach((card, i) => {
-        setTimeout(() => {
-          card.classList.add('restack');
-        }, i * 20);
-      });
-    }, restackStartTime);
+    function shuffleDeck() {
+      document.getElementById('shuffleSound').play();
+      document.getElementById('results').innerHTML = '';
+      document.getElementById('shuffleStatus').textContent = 'Shuffling the deck...';
+      disableDrawButtons(true);
+      deck = [];
 
-    setTimeout(() => {
+      const scatterContainer = document.getElementById('deckContainer');
+      const stackContainer = document.getElementById('deckStack');
       scatterContainer.innerHTML = '';
+      stackContainer.innerHTML = '';
 
-      for (let i = 0; i < 8; i++) {
+      const cardCount = 30;
+      const restackStartTime = 3500;
+      const restackDuration = 1200;
+
+      const cards = [];
+
+      for (let i = 0; i < cardCount; i++) {
         const card = document.createElement('div');
-        card.className = 'deck-card';
-        card.style.zIndex = i;
-        card.style.top = `${i * 1.5}px`;
-        stackContainer.appendChild(card);
+        card.className = 'card';
+        scatterContainer.appendChild(card);
+        cards.push(card);
+
+        setTimeout(() => {
+          card.classList.add('animate');
+          card.style.transform = `translate(-50%, -50%) translate(${Math.random() * 200 - 100}px, ${Math.random() * 40 - 20}px) rotate(${Math.random() * 60 - 30}deg)`;
+        }, i * 80);
       }
 
-      document.getElementById('shuffleStatus').textContent = 'Deck is ready! ✨';
-      disableDrawButtons(false);
-    }, restackStartTime + restackDuration);
-  }
+      setTimeout(() => {
+        cards.forEach((card, i) => {
+          setTimeout(() => {
+            card.classList.add('restack');
+          }, i * 20);
+        });
+      }, restackStartTime);
 
-  function generateDeck() {
-    for (let i = 0; i < TOTAL_OPTIONS; i++) {
-      const isSpecial = Math.random() < SPECIAL_PROBABILITY;
-      deck[i] = { id: i + 1, name: optionNames[i], isSpecial };
+      setTimeout(() => {
+        scatterContainer.innerHTML = '';
+
+        for (let i = 0; i < 8; i++) {
+          const card = document.createElement('div');
+          card.className = 'deck-card';
+          card.style.zIndex = i;
+          card.style.top = `${i * 1.5}px`;
+          stackContainer.appendChild(card);
+        }
+
+        document.getElementById('shuffleStatus').textContent = 'Deck is ready! ✨';
+        disableDrawButtons(false);
+      }, restackStartTime + restackDuration);
     }
-  }
 
-  function drawOptions(count) {
-    generateDeck();
-    const shuffled = [...deck].sort(() => 0.5 - Math.random());
-    const drawn = shuffled.slice(0, count);
+    function generateDeck() {
+      for (let i = 0; i < TOTAL_OPTIONS; i++) {
+        const isSpecial = Math.random() < SPECIAL_PROBABILITY;
+        deck[i] = { id: i + 1, name: optionNames[i], isSpecial };
+      }
+    }
 
-    let output = `<h2>Results (${count} card spread):</h2><ul>`;
-    let specialCount = 0;
+    function drawOptions(count) {
+      document.getElementById('drawSound').play();
+      generateDeck();
+      const shuffled = [...deck].sort(() => 0.5 - Math.random());
+      const drawn = shuffled.slice(0, count);
 
-    drawn.forEach(opt => {
-      const label = opt.isSpecial ? ` - <span class="special">✨INVERTED✨</span>` : '';
-      if (opt.isSpecial) specialCount++;
-      output += `<li>${opt.name}${label}</li>`;
-    });
+      let output = `<h2>Results (${count} drawn):</h2><ul>`;
+      let specialCount = 0;
 
-    output += `</ul><p>✨ Inverted cards drawn: <strong>${specialCount}</strong> out of ${count}</p>`;
-    document.getElementById('results').innerHTML = output;
-  }
+      drawn.forEach(opt => {
+        const label = opt.isSpecial ? ` - <span class="special">✨INVERTED✨</span>` : '';
+        if (opt.isSpecial) specialCount++;
+        output += `<li>${opt.name}${label}</li>`;
+      });
 
-  function disableDrawButtons(disable) {
-    document.querySelectorAll('.draw-button').forEach(btn => btn.disabled = disable);
-  }
-  </script>
+      output += `</ul><p>✨ Inverted cards drawn: <strong>${specialCount}</strong> out of ${count}</p>`;
+      document.getElementById('results').innerHTML = output;
+    }
 
+    function disableDrawButtons(disable) {
+      document.querySelectorAll('.draw-button').forEach(btn => btn.disabled = disable);
+    }
+    </script>
 </body>
+
 </html>
