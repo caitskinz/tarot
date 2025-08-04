@@ -117,6 +117,7 @@
             transform: translate(-50%, -50%);
             opacity: 0;
             transition: transform 0.5s ease, opacity 0.5s ease;
+            box-shadow: 0 0 8px rgba(143, 39, 217);
         }
 
         .card.animate {
@@ -145,18 +146,19 @@
             position: absolute;
             top: 0;
             left: 0;
-            box-shadow: 0 0 3px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 0 8px rgba(143, 39, 217);
         }
-        .meaning {
-  font-style: italic;
-  font-size: 14px;
-  margin-top: 4px;
-  color: #555;
-}
 
-body.dark .meaning {
-  color: #ccc;
-}
+        .meaning {
+            font-style: italic;
+            font-size: 14px;
+            margin-top: 4px;
+            color: #555;
+        }
+
+        body.dark .meaning {
+            color: #ccc;
+        }
 
 
         /* Dark mode */
