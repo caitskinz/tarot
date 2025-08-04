@@ -147,6 +147,17 @@
             left: 0;
             box-shadow: 0 0 3px rgba(0, 0, 0, 0.4);
         }
+        .meaning {
+  font-style: italic;
+  font-size: 14px;
+  margin-top: 4px;
+  color: #555;
+}
+
+body.dark .meaning {
+  color: #ccc;
+}
+
 
         /* Dark mode */
         body.dark {
@@ -275,123 +286,195 @@
         src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_e9fe5ab2a3.mp3?filename=card-flip.mp3"></audio>
 
     <script>
-        const TOTAL_OPTIONS = 78;
-    const SPECIAL_PROBABILITY = 0.05;
-    let deck = [];
+        const SPECIAL_PROBABILITY = 0.05;
+  const TOTAL_OPTIONS = 78;
+  let deck = [];
 
-    const optionNames = ["The Fool", "The Magician", "The High Priestess", "The Empress", "The Emperor",
-      "The Hierophant", "The Lovers", "The Chariot", "Strength", "The Hermit",
-      "Wheel of Fortune", "Justice", "The Hanged Man", "Death", "Temperance",
-      "The Devil", "The Tower", "The Star", "The Moon", "The Sun",
-      "Judgement", "The World",
-      "Ace of Wands", "Two of Wands", "Three of Wands", "Four of Wands", "Five of Wands",
-      "Six of Wands", "Seven of Wands", "Eight of Wands", "Nine of Wands", "Ten of Wands",
-      "Page of Wands", "Knight of Wands", "Queen of Wands", "King of Wands",
-      "Ace of Cups", "Two of Cups", "Three of Cups", "Four of Cups", "Five of Cups",
-      "Six of Cups", "Seven of Cups", "Eight of Cups", "Nine of Cups", "Ten of Cups",
-      "Page of Cups", "Knight of Cups", "Queen of Cups", "King of Cups",
-      "Ace of Swords", "Two of Swords", "Three of Swords", "Four of Swords", "Five of Swords",
-      "Six of Swords", "Seven of Swords", "Eight of Swords", "Nine of Swords", "Ten of Swords",
-      "Page of Swords", "Knight of Swords", "Queen of Swords", "King of Swords",
-      "Ace of Pentacles", "Two of Pentacles", "Three of Pentacles", "Four of Pentacles", "Five of Pentacles",
-      "Six of Pentacles", "Seven of Pentacles", "Eight of Pentacles", "Nine of Pentacles", "Ten of Pentacles",
-      "Page of Pentacles", "Knight of Pentacles", "Queen of Pentacles", "King of Pentacles"];
+  const optionNames = [
+    { name: "The Fool", meaning: "innocence, new beginnings, free spirit", specialMeaning: "recklessness, taken advantage of, inconsideration" },
+    { name: "The Magician", meaning: "willpower, desire, creation, manifestation", specialMeaning: "trickery, illusions, out of touch" },
+    { name: "The High Priestess", meaning: "intuitive, unconscious, inner voice ", specialMeaning: "lack of center, lost inner voice, repressed feelings" },
+    { name: "The Empress", meaning: "motherhood, fertility, nature ", specialMeaning: "dependence, smothering, emptiness, nosiness" },
+    { name: "The Emperor", meaning: "authority, structure, control, fatherhood ", specialMeaning: "tyranny, rigidity, coldness" },
+    { name: "The Hierophant", meaning: "tradition, conformity, morality, ethics ", specialMeaning: "rebellion, subversiveness, new approaches" },
+    { name: "The Lovers", meaning: "partnerships, duality, union ", specialMeaning: "loss of balance, one-sidedness, disharmony" },
+    { name: "The Chariot", meaning: "direction, control, willpower ", specialMeaning: "lack of control, lack of direction, aggression" },
+    { name: "Strength", meaning: "inner strength, bravery, compassion, focus ", specialMeaning: "self doubt, weakness, insecurity" },
+    { name: "The Hermit", meaning: "contemplation, search for truth, inner guidance ", specialMeaning: "loneliness, isolation, lost your way" },
+    { name: "Wheel of Fortune", meaning: "change, cycles, inevitable fate ", specialMeaning: "no control, clinging to control, bad luck" },
+    { name: "Justice", meaning: "cause and effect, clarity, truth ", specialMeaning: "dishonesty, unaccountability, unfairness" },
+    { name: "The Hanged Man", meaning: "sacrifice, release, martyrdom ", specialMeaning: "stalling, needless sacrifice, fear of sacrifice" },
+    { name: "Death", meaning: "end of cycle, beginnings, change, metamorphosis ", specialMeaning: "fear of change, holding on, stagnation, decay" },
+    { name: "Temperance", meaning: "middle path, patience, finding meaning ", specialMeaning: "extremes, excess, lack of balance" },
+    { name: "The Devil", meaning: "addiction, materialism, playfulness ", specialMeaning: "freedom, release, restoring control" },
+    { name: "The Tower", meaning: "sudden upheaval, broken pride, disaster ", specialMeaning: "disaster avoided, delayed disaster, fear of suffering" },
+    { name: "The Star", meaning: "hope, faith, rejuvenation ", specialMeaning: "faithlessness, discouragement, insecurity" },
+    { name: "The Moon", meaning: "unconscious, illusions, intuition ", specialMeaning: "confusion, fear, misinterpretation" },
+    { name: "The Sun", meaning: "joy, success, celebration, positivity ", specialMeaning: "negativity, depression, sadness" },
+    { name: "Judgement", meaning: "reflection, reckoning, awakening ", specialMeaning: "lack of self awareness, doubt, self loathing" },
+    { name: "The World", meaning: "fulfillment, harmony, completion ", specialMeaning: "incompletion, no closure" },
+    { name: "Ace of Wands", meaning: "creation, willpower, inspiration, desire ", specialMeaning: "lack of energy, lack of passion, boredom" },
+    { name: "Two of Wands", meaning: "planning, making decisions, leaving home ", specialMeaning: "fear of change, playing safe, bad planning" },
+    { name: "Three of Wands", meaning: "looking ahead, expansion, rapid growth ", specialMeaning: "obstacles, delays, frustration" },
+    { name: "Four of Wands", meaning: "community, home, celebration ", specialMeaning: "lack of support, transience, home conflicts" },
+    { name: "Five of Wands", meaning: "competition, rivalry, conflict ", specialMeaning: "avoiding conflict, respecting differences" },
+    { name: "Six of Wands", meaning: "victory, success, public reward ", specialMeaning: "excess pride, lack of recognition, punishment" },
+    { name: "Seven of Wands", meaning: "perseverance, defensive, maintaining control ", specialMeaning: "give up, destroyed confidence, overwhelmed" },
+    { name: "Eight of Wands", meaning: "rapid action, movement, quick decisions ", specialMeaning: "panic, waiting, slowdown" },
+    { name: "Nine of Wands", meaning: "resilience, grit, last stand ", specialMeaning: "exhaustion, fatigue, questioning motivations" },
+    { name: "Ten of Wands", meaning: "accomplishment, responsibility, burden ", specialMeaning: "inability to delegate, overstressed, burnt out" },
+    { name: "Page of Wands", meaning: "exploration, excitement, freedom ", specialMeaning: "lack of direction, procrastination, creating conflict" },
+    { name: "Knight of Wands", meaning: "action, adventure, fearlessness ", specialMeaning: "anger, impulsiveness, recklessness" },
+    { name: "Queen of Wands", meaning: "courage, determination, joy ", specialMeaning: "selfishness, jealousy, insecurities" },
+    { name: "King of Wands", meaning: "big picture, leader, overcoming challenges ", specialMeaning: "impulsive, overbearing, unachievable expectations" },
+    { name: "Ace of Cups", meaning: "new feelings, spirituality, intuition ", specialMeaning: "emotional loss, blocked creativity, emptiness" },
+    { name: "Two of Cups", meaning: "unity, partnership, connection ", specialMeaning: "imbalance, broken communication, tension" },
+    { name: "Three of Cups", meaning: "friendship, community, happiness ", specialMeaning: "overindulgence, gossip, isolation" },
+    { name: "Four of Cups", meaning: "apathy, contemplation, disconnectedness ", specialMeaning: "sudden awareness, choosing happiness, acceptance" },
+    { name: "Five of Cups", meaning: "loss, grief, self-pity ", specialMeaning: "acceptance, moving on, finding peace" },
+    { name: "Six of Cups", meaning: "familiarity, happy memories, healing ", specialMeaning: "moving forward, leaving home, independence" },
+    { name: "Seven of Cups", meaning: "searching for purpose, choices, daydreaming ", specialMeaning: "lack of purpose, diversion, confusion" },
+    { name: "Eight of Cups", meaning: "walking away, disillusionment, leaving behind ", specialMeaning: "avoidance, fear of change, fear of loss" },
+    { name: "Nine of Cups", meaning: "satisfaction, emotional stability, luxury ", specialMeaning: "lack of inner joy, smugness, dissatisfaction" },
+    { name: "Ten of Cups", meaning: "inner happiness, fulfillment, dreams coming true ", specialMeaning: "shattered dreams, broken family, domestic disharmony" },
+    { name: "Page of Cups", meaning: "happy surprise, dreamer, sensitivity ", specialMeaning: "emotional immaturity, insecurity, disappointment" },
+    { name: "Knight of Cups", meaning: "following the heart, idealist, romantic ", specialMeaning: "moodiness, disappointment" },
+    { name: "Queen of Cups", meaning: "compassion, calm, comfort ", specialMeaning: "martyrdom, insecurity, dependence" },
+    { name: "King of Cups", meaning: "compassion, control, balance ", specialMeaning: "coldness, moodiness, bad advice" },
+    { name: "Ace of Swords", meaning: "breakthrough, clarity, sharp mind ", specialMeaning: "confusion, brutality, chaos" },
+    { name: "Two of Swords", meaning: "difficult choices, indecision, stalemate ", specialMeaning: "lesser of two evils, no right choice, confusion" },
+    { name: "Three of Swords", meaning: "heartbreak, suffering, grief ", specialMeaning: "recovery, forgiveness, moving on" },
+    { name: "Four of Swords", meaning: "rest, restoration, contemplation ", specialMeaning: "restlessness, burnout, stress" },
+    { name: "Five of Swords", meaning: "unbridled ambition, win at all costs, sneakiness ", specialMeaning: "lingering resentment, desire to reconcile, forgiveness" },
+    { name: "Six of Swords", meaning: "transition, leaving behind, moving on ", specialMeaning: "emotional baggage, unresolved issues, resisting transition" },
+    { name: "Seven of Swords", meaning: "deception, trickery, tactics and strategy ", specialMeaning: "coming clean, rethinking approach, deception" },
+    { name: "Eight of Swords", meaning: "imprisonment, entrapment, self-victimization ", specialMeaning: "self acceptance, new perspective, freedom" },
+    { name: "Nine of Swords", meaning: "anxiety, hopelessness, trauma ", specialMeaning: "hope, reaching out, despair" },
+    { name: "Ten of Swords", meaning: "failure, collapse, defeat ", specialMeaning: "can't get worse, only upwards, inevitable end" },
+    { name: "Page of Swords", meaning: "curiosity, restlessness, mental energy ", specialMeaning: "deception, manipulation, all talk" },
+    { name: "Knight of Swords", meaning: "action, impulsiveness, defending beliefs ", specialMeaning: "no direction, disregard for consequences, unpredictability" },
+    { name: "Queen of Swords", meaning: "complexity, perceptiveness, clear mindedness ", specialMeaning: "cold hearted, cruel, bitterness" },
+    { name: "King of Swords", meaning: "head over heart, discipline, truth ", specialMeaning: "manipulative, cruel, weakness" },
+    { name: "Ace of Pentacles", meaning: "opportunity, prosperity, new venture ", specialMeaning: "lost opportunity, missed chance, bad investment" },
+    { name: "Two of Pentacles", meaning: "balancing decisions, priorities, adapting to change ", specialMeaning: "loss of balance, disorganized, overwhelmed" },
+    { name: "Three of Pentacles", meaning: "teamwork, collaboration, building ", specialMeaning: "lack of teamwork, disorganized, group conflict" },
+    { name: "Four of Pentacles", meaning: "conservation, frugality, security ", specialMeaning: "greediness, stinginess, possessiveness" },
+    { name: "Five of Pentacles", meaning: "need, poverty, insecurity ", specialMeaning: "recovery, charity, improvement" },
+    { name: "Six of Pentacles", meaning: "charity, generosity, sharing ", specialMeaning: "strings attached, stinginess, power and domination" },
+    { name: "Seven of Pentacles", meaning: "hard work, perseverance, diligence ", specialMeaning: "work without results, distractions, lack of rewards" },
+    { name: "Eight of Pentacles", meaning: "apprenticeship, passion, high standards ", specialMeaning: "lack of passion, uninspired, no motivation" },
+    { name: "Nine of Pentacles", meaning: "fruits of labor, rewards, luxury ", specialMeaning: "reckless spending, living beyond means, false success" },
+    { name: "Ten of Pentacles", meaning: "legacy, culmination, inheritance ", specialMeaning: "fleeting success, lack of stability, lack of resources" },
+    { name: "Page of Pentacles", meaning: "ambition, desire, diligence ", specialMeaning: "lack of commitment, greediness, laziness" },
+    { name: "Knight of Pentacles", meaning: "efficiency, hard work, responsibility ", specialMeaning: "laziness, obsessiveness, work without reward" },
+    { name: "Queen of Pentacles", meaning: "practicality, creature comforts, financial security ", specialMeaning: "self-centeredness, jealousy, smothering" },
+    { name: "King of Pentacles", meaning: "abundance, prosperity, security ", specialMeaning: "greed, indulgence, sensuality" },
+];
+  function toggleTheme() {
+    document.body.classList.toggle('dark');
+  }
 
-    function toggleTheme() {
-      document.body.classList.toggle('dark');
+  function shuffleDeck() {
+    document.getElementById('shuffleSound').play();
+    document.getElementById('results').innerHTML = '';
+    document.getElementById('shuffleStatus').textContent = 'Shuffling the deck...';
+    disableDrawButtons(true);
+    deck = [];
+
+    const scatterContainer = document.getElementById('deckContainer');
+    const stackContainer = document.getElementById('deckStack');
+    scatterContainer.innerHTML = '';
+    stackContainer.innerHTML = '';
+
+    const cardCount = 30;
+    const restackStartTime = 3500;
+    const restackDuration = 1200;
+
+    const cards = [];
+
+    for (let i = 0; i < cardCount; i++) {
+      const card = document.createElement('div');
+      card.className = 'card';
+      scatterContainer.appendChild(card);
+      cards.push(card);
+
+      setTimeout(() => {
+        card.classList.add('animate');
+        card.style.transform = `translate(-50%, -50%) translate(${Math.random() * 200 - 100}px, ${Math.random() * 40 - 20}px) rotate(${Math.random() * 60 - 30}deg)`;
+      }, i * 80);
     }
 
-    function shuffleDeck() {
-      document.getElementById('shuffleSound').play();
-      document.getElementById('results').innerHTML = '';
-      document.getElementById('shuffleStatus').textContent = 'Shuffling the deck...';
-      disableDrawButtons(true);
-      deck = [];
-
-      const scatterContainer = document.getElementById('deckContainer');
-      const stackContainer = document.getElementById('deckStack');
-      scatterContainer.innerHTML = '';
-      stackContainer.innerHTML = '';
-
-      const cardCount = 30;
-      const restackStartTime = 3500;
-      const restackDuration = 1200;
-
-      const cards = [];
-
-      for (let i = 0; i < cardCount; i++) {
-        const card = document.createElement('div');
-        card.className = 'card';
-        scatterContainer.appendChild(card);
-        cards.push(card);
-
+    setTimeout(() => {
+      cards.forEach((card, i) => {
         setTimeout(() => {
-          card.classList.add('animate');
-          card.style.transform = `translate(-50%, -50%) translate(${Math.random() * 200 - 100}px, ${Math.random() * 40 - 20}px) rotate(${Math.random() * 60 - 30}deg)`;
-        }, i * 80);
+          card.classList.add('restack');
+        }, i * 20);
+      });
+    }, restackStartTime);
+
+    setTimeout(() => {
+      scatterContainer.innerHTML = '';
+
+      for (let i = 0; i < 8; i++) {
+        const card = document.createElement('div');
+        card.className = 'deck-card';
+        card.style.zIndex = i;
+        card.style.top = `${i * 1.5}px`;
+        stackContainer.appendChild(card);
       }
 
-      setTimeout(() => {
-        cards.forEach((card, i) => {
-          setTimeout(() => {
-            card.classList.add('restack');
-          }, i * 20);
-        });
-      }, restackStartTime);
+      document.getElementById('shuffleStatus').textContent = 'Deck is ready! ✨';
+      disableDrawButtons(false);
+    }, restackStartTime + restackDuration);
+  }
 
-      setTimeout(() => {
-        scatterContainer.innerHTML = '';
+ function generateDeck() {
+  deck = optionNames.map((card, i) => {
+    const isSpecial = Math.random() < SPECIAL_PROBABILITY;
+    return {
+      id: i + 1,
+      name: card.name,
+      isSpecial,
+      meaning: isSpecial && card.specialMeaning ? card.specialMeaning : card.meaning
+    };
+  });
 
-        for (let i = 0; i < 8; i++) {
-          const card = document.createElement('div');
-          card.className = 'deck-card';
-          card.style.zIndex = i;
-          card.style.top = `${i * 1.5}px`;
-          stackContainer.appendChild(card);
-        }
+  // Shuffle deck in-place
+  for (let i = deck.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [deck[i], deck[j]] = [deck[j], deck[i]];
+  }
+}
 
-        document.getElementById('shuffleStatus').textContent = 'Deck is ready! ✨';
-        disableDrawButtons(false);
-      }, restackStartTime + restackDuration);
-    }
-
-    function generateDeck() {
-      for (let i = 0; i < TOTAL_OPTIONS; i++) {
-        const isSpecial = Math.random() < SPECIAL_PROBABILITY;
-        deck[i] = { id: i + 1, name: optionNames[i], isSpecial };
-      }
-    }
-
-    function drawOptions(count) {
+function drawOptions(count) {
   document.getElementById('drawSound').play();
   generateDeck();
-  const shuffled = [...deck].sort(() => 0.5 - Math.random());
-  const drawn = shuffled.slice(0, count);
+
+  const drawn = deck.slice(0, count);
 
   let output = `<h2>Results (${count} drawn):</h2><ul>`;
   let specialCount = 0;
 
   drawn.forEach(opt => {
     const label = opt.isSpecial ? ` - <span class="special">✨INVERTED✨</span>` : '';
+    const meaning = `<div class="meaning">${opt.meaning}</div>`;
     if (opt.isSpecial) specialCount++;
-    output += `<li>${opt.name}${label}</li>`;
+
+    output += `<li><strong>${opt.name}</strong>${label}${meaning}</li>`;
   });
 
   output += `</ul><p>✨ Inverted cards drawn: <strong>${specialCount}</strong> out of ${count}</p>`;
   document.getElementById('results').innerHTML = output;
 
-  // ✅ Disable draw buttons after use
   disableDrawButtons(true);
-
-  // Optionally prompt
   document.getElementById('shuffleStatus').textContent = '🔁 Shuffle again to draw new cards';
 }
 
-
-    function disableDrawButtons(disable) {
-      document.querySelectorAll('.draw-button').forEach(btn => btn.disabled = disable);
-    }
+  function disableDrawButtons(disable) {
+    document.querySelectorAll('.draw-button').forEach(btn => btn.disabled = disable);
+  }
     </script>
+
 </body>
 
 </html>
