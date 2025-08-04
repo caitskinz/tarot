@@ -162,11 +162,6 @@
             background: #2c2c2c;
             color: #f0f0f0;
         }
-        
-        body.dark .special {
-            color: #d68ff9;
-            font-weight: bold;
-        }
 
         body.dark .draw-button {
             background-color: #4b006e;
@@ -195,10 +190,16 @@
             color: #000;
         }
 
+        body.dark .special {
+            color: #d68ff9;
+            font-weight: bold;
+        }
+
         body.dark .card,
         body.dark .deck-card {
             box-shadow: 0 0 12px rgba(252, 211, 77, 0.4);
         }
+
 
         /* Responsive */
         @media (max-width: 600px) {
@@ -263,7 +264,7 @@
     <p>Select how many cards to draw:</p>
     <button class="draw-button" onclick="drawOptions(3)" disabled>3 Card Spread</button>
     <button class="draw-button" onclick="drawOptions(5)" disabled>5 Card Spread</button>
-    <button class="draw-button" onclick="drawOptions(10)" disabled>10 Card Spread</button>
+    <button class="draw-button" onclick="drawOptions(10)" disabled>Celtic Cross</button>
 
     <div id="results" class="results"></div>
 
@@ -362,23 +363,30 @@
     }
 
     function drawOptions(count) {
-      document.getElementById('drawSound').play();
-      generateDeck();
-      const shuffled = [...deck].sort(() => 0.5 - Math.random());
-      const drawn = shuffled.slice(0, count);
+  document.getElementById('drawSound').play();
+  generateDeck();
+  const shuffled = [...deck].sort(() => 0.5 - Math.random());
+  const drawn = shuffled.slice(0, count);
 
-      let output = `<h2>Results (${count} drawn):</h2><ul>`;
-      let specialCount = 0;
+  let output = `<h2>Results (${count} drawn):</h2><ul>`;
+  let specialCount = 0;
 
-      drawn.forEach(opt => {
-        const label = opt.isSpecial ? ` - <span class="special">✨INVERTED✨</span>` : '';
-        if (opt.isSpecial) specialCount++;
-        output += `<li>${opt.name}${label}</li>`;
-      });
+  drawn.forEach(opt => {
+    const label = opt.isSpecial ? ` - <span class="special">✨INVERTED✨</span>` : '';
+    if (opt.isSpecial) specialCount++;
+    output += `<li>${opt.name}${label}</li>`;
+  });
 
-      output += `</ul><p>✨ Inverted cards drawn: <strong>${specialCount}</strong> out of ${count}</p>`;
-      document.getElementById('results').innerHTML = output;
-    }
+  output += `</ul><p>✨ Inverted cards drawn: <strong>${specialCount}</strong> out of ${count}</p>`;
+  document.getElementById('results').innerHTML = output;
+
+  // ✅ Disable draw buttons after use
+  disableDrawButtons(true);
+
+  // Optionally prompt
+  document.getElementById('shuffleStatus').textContent = '🔁 Shuffle again to draw new cards';
+}
+
 
     function disableDrawButtons(disable) {
       document.querySelectorAll('.draw-button').forEach(btn => btn.disabled = disable);
