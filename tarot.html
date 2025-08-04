@@ -1,20 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Tarot Card Drawer</title>
-</head>
-<body>
-  <h1>🔮 Tarot Card Drawer</h1>
-
-  <button id="shuffleButton" onclick="shuffleDeck()">🔁 Shuffle Cards</button>
-  <div id="shuffleStatus"></div>
-
-  <p>Select how many cards to draw:</p>
-  <button class="draw-button" onclick="drawOptions(3)" disabled>Draw 3</button>
-  <button class="draw-button" onclick="drawOptions(5)" disabled>Draw 5</button>
-  <button class="draw-button" onclick="drawOptions(10)" disabled>Draw 10</button>
-
-  <div id="results" class="results"></div>
-  </body>
-</html>
+<h1>🔮 Tarot Card Reader</h1>
+<button id="shuffleButton" onclick="shuffleDeck()">🔁 Shuffle Cards</button>
+<div id="shuffleStatus"></div>
+<div class="deck-container" id="deckContainer"></div>
+<div id="deckStack"></div>
+<p>Select how many cards to draw:</p>
+<button class="draw-button" onclick="drawOptions(3)" disabled>3 Card Spread</button>
+<button class="draw-button" onclick="drawOptions(5)" disabled>5 Card Spread</button>
+<button class="draw-button" onclick="drawOptions(10)" disabled>Celtic Cross</button>
+<div id="results" class="results"></div>
